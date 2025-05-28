@@ -159,11 +159,11 @@ jobs:
             - This is a Next.js 15 project with TypeScript, Tailwind CSS
             - It's a personal portfolio website (danielsbonnin.com)
             - Current structure includes: ${projectStructure}
-            
-            **Issue to Implement:**
+              **Issue to Implement:**
             Title: ${issueTitle}
             Description: ${issueBody}
-              **Your Task:**
+            
+            **Your Task:**
             1. Analyze the request and determine what specific files need to be created/modified
             2. Generate the complete, production-ready code for each file
             3. Ensure the code follows Next.js 15 best practices and TypeScript
