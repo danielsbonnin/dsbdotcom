@@ -50,7 +50,9 @@ jobs:
           NODE_ENV: production
         
       - name: Add nojekyll file
-        run: touch ./out/.nojekyll
+        run: |
+          mkdir -p ./out
+          touch ./out/.nojekyll
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
