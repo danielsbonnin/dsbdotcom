@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     unoptimized: true
   },
   basePath: isProd && isGitHubPages ? '/dsbdotcom' : '',
-  assetPrefix: isProd && isGitHubPages ? '/dsbdotcom/' : '',
+  assetPrefix: isProd && isGitHubPages ? '/dsbdotcom' : '',
 };
 
 export default nextConfig;
