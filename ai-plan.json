@@ -1,0 +1,16 @@
+{
+  "task": "This is a test issue to verify that the AI agent automation system is working correctly after fixing the GitHub Actions workflow syntax errors.",
+  "requirements": [
+    "& Acceptance Criteria",
+    "- AI agent should respond to this issue",
+    "- Workflow should run successfully",
+    "- A pull request should be created (even if it's just a test)"
+  ],
+  "targetFiles": [
+    "/Create",
+    "- test-file.txt (new test file)"
+  ],
+  "additionalContext": "This is just a test to verify the AI automation system is functioning properly.",
+  "issueNumber": 2,
+  "title": "[AI-TEST] Test AI agent automation"
+}
