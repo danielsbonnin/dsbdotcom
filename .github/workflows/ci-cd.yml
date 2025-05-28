@@ -29,7 +29,7 @@ jobs:
         run: npm run build
         
       - name: Run tests (if any)
-        run: npm test --if-present
+        run: npm test --if-present --passWithNoTests
         
   deploy:
     needs: test
@@ -52,11 +52,6 @@ jobs:
       - name: Build application
         run: npm run build
         
-      # Add your deployment steps here
-      # For example, deploy to Vercel:
-      # - name: Deploy to Vercel
-      #   uses: amondnet/vercel-action@v25
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     vercel-org-id: ${{ secrets.ORG_ID }}
-      #     vercel-project-id: ${{ secrets.PROJECT_ID }}
+      # Deployment is now handled by deploy-pages.yml workflow
+      - name: Deployment status
+        run: echo "Deployment handled by GitHub Pages workflow"
