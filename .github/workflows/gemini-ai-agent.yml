@@ -47,9 +47,8 @@ jobs:
               });
               return;
             }
-            
-            const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+              const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-preview-05-20" });
             
             const issue = context.payload.issue;
             const issueBody = issue.body || '';
