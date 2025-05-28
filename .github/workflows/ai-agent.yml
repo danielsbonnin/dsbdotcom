@@ -89,8 +89,8 @@ jobs:
               repo: context.repo.repo,
               labels: ['in-progress', 'ai-working']
             });
-            
-      - name: Create AI Implementation Branch
+              - name: Create AI Implementation Branch
+        id: create-branch
         run: |
           git config --global user.name 'AI Agent'
           git config --global user.email 'ai-agent@danielsbonnin.com'
@@ -98,6 +98,7 @@ jobs:
           # Create a new branch for this issue
           BRANCH_NAME="ai-task-${{ github.event.issue.number }}-$(date +%s)"
           git checkout -b "$BRANCH_NAME"
+          echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           
           # Create a placeholder implementation file
           mkdir -p .ai-implementations
@@ -127,8 +128,7 @@ jobs:
           2. Test the changes
           3. Merge when ready
           EOF
-          
-          # Commit the implementation
+            # Commit the implementation
           git add .
           git commit -m "AI Implementation for issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
           git push origin "$BRANCH_NAME"
@@ -137,13 +137,11 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const branchName = `ai-task-${{ github.event.issue.number }}-${Date.now()}`;
-            
             const { data: pr } = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `🤖 AI Implementation: ${{ github.event.issue.title }}`,
-              head: branchName,
+              head: `${{ steps.create-branch.outputs.branch-name }}`,
               base: 'main',
               body: `## AI Agent Implementation
               
