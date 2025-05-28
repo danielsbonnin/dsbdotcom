@@ -11,8 +11,8 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true
   },
-  basePath: isProd && isGitHubPages ? '/danielsbonnin.com' : '',
-  assetPrefix: isProd && isGitHubPages ? '/danielsbonnin.com/' : '',
+  basePath: isProd && isGitHubPages ? '/dsbdotcom' : '',
+  assetPrefix: isProd && isGitHubPages ? '/dsbdotcom/' : '',
 };
 
 export default nextConfig;
