@@ -198,13 +198,12 @@ jobs:
             
             Generate actual, working code - not placeholder comments or TODOs.
             `;
-            
-            try {
+              try {
               console.log('Sending request to Gemini AI...');
               const result = await model.generateContent(prompt);
               const response = await result.response;
               const aiResponse = response.text();
-                console.log('AI Response received, parsing...');
+              console.log('AI Response received, parsing...');
               
               // Extract JSON from response (handle markdown code blocks)
               let jsonStr = aiResponse;
