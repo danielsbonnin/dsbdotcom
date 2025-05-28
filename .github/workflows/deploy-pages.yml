@@ -48,9 +48,13 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          GITHUB_PAGES_CUSTOM_DOMAIN: true
         
       - name: Add nojekyll file
         run: touch ./out/.nojekyll
+        
+      - name: Add CNAME for custom domain
+        run: echo "danielsbonnin.com" > ./out/CNAME
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
