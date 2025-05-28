@@ -1,0 +1,71 @@
+name: 🐛 Bug Report
+description: Report a bug for AI agent to fix
+title: "[BUG] "
+labels: ["bug", "ai-agent"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug Report for AI Agent
+        This bug will be automatically assigned to an AI agent for resolution.
+        
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How severe is this bug?
+      options:
+        - Low - Minor issue
+        - Medium - Functionality affected
+        - High - Major functionality broken
+        - Critical - App unusable
+      default: 1
+    validations:
+      required: true
+      
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: What is the bug? What's happening vs what should happen?
+      placeholder: "The contact form doesn't validate email addresses properly..."
+    validations:
+      required: true
+      
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can the AI agent reproduce this bug?
+      placeholder: |
+        1. Go to contact page
+        2. Enter invalid email
+        3. Click submit
+        4. See error...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What should happen instead?
+      
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happens?
+      
+  - type: input
+    id: browser
+    attributes:
+      label: Browser/Environment
+      description: What browser or environment is this occurring in?
+      placeholder: "Chrome 121, Firefox 122, etc."
+      
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Screenshots, error messages, or other helpful information

@@ -1,0 +1,78 @@
+name: 🤖 AI Agent Task
+description: Create a task for an AI agent to complete
+title: "[AI-TASK] "
+labels: ["ai-agent", "task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## AI Agent Task Request
+        This issue will be automatically assigned to an AI agent for completion.
+        
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this task?
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+      default: 1
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: task-type
+    attributes:
+      label: Task Type
+      description: What type of task is this?
+      options:
+        - Feature Development
+        - Bug Fix
+        - Code Refactoring
+        - Documentation
+        - Testing
+        - UI/UX Improvement
+        - Performance Optimization
+        - Other
+      default: 0
+    validations:
+      required: true
+      
+  - type: textarea
+    id: description
+    attributes:
+      label: Task Description
+      description: Describe what you want the AI agent to accomplish
+      placeholder: "Please implement a new contact form component with validation..."
+    validations:
+      required: true
+      
+  - type: textarea
+    id: requirements
+    attributes:
+      label: Requirements & Acceptance Criteria
+      description: List specific requirements and how to verify the task is complete
+      placeholder: |
+        - Must include form validation
+        - Should be responsive
+        - Must include error handling
+        - Tests should pass
+      
+  - type: textarea
+    id: files
+    attributes:
+      label: Files to Modify/Create
+      description: List specific files that should be modified or created (optional)
+      placeholder: |
+        - src/components/ContactForm.tsx
+        - src/app/contact/page.tsx
+        
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any additional information that would help the AI agent
+      placeholder: "This should integrate with the existing design system..."

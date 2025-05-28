@@ -1,5 +1,17 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## 🤖 AI Agent Development System
+
+This repository includes an automated AI agent that can handle development tasks assigned through GitHub Issues. Simply create an issue with the "🤖 AI Agent Task" template, and an AI agent will automatically implement the requested feature or fix.
+
+**Quick Start with AI Agent:**
+1. Go to Issues → New Issue
+2. Select "🤖 AI Agent Task" template  
+3. Describe what you want built
+4. Watch as the AI agent creates a pull request with the implementation!
+
+[📖 Read the full AI Agent documentation](AI-AGENT-README.md)
+
 ## Getting Started
 
 First, run the development server:
