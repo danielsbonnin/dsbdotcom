@@ -74,8 +74,7 @@ jobs:
               - **Type:** ${{ steps.parse-issue.outputs.taskType }}
               - **Priority:** ${{ steps.parse-issue.outputs.priority }}
               - **Status:** In Progress 🔄
-              
-              I'll update this issue with my progress. Expected completion time: 5-10 minutes.
+                I'll update this issue with my progress. Expected completion time: 5-10 minutes.
               `
             });
             
@@ -89,7 +88,8 @@ jobs:
               repo: context.repo.repo,
               labels: ['in-progress', 'ai-working']
             });
-              - name: Create AI Implementation Branch
+            
+      - name: Create AI Implementation Branch
         id: create-branch
         run: |
           git config --global user.name 'AI Agent'
