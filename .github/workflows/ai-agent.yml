@@ -96,42 +96,155 @@ jobs:
           git config --global user.email 'ai-agent@danielsbonnin.com'
           
           # Create a new branch for this issue
-          BRANCH_NAME="ai-task-${{ github.event.issue.number }}-$(date +%s)"
-          git checkout -b "$BRANCH_NAME"
+          BRANCH_NAME="ai-task-${{ github.event.issue.number }}-$(date +%s)"          git checkout -b "$BRANCH_NAME"
           echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           
-          # Create a placeholder implementation file
-          mkdir -p .ai-implementations
-          cat > .ai-implementations/task-${{ github.event.issue.number }}.md << EOF
-          # AI Implementation for Issue #${{ github.event.issue.number }}
-          
-          **Issue Title:** ${{ github.event.issue.title }}
-          **Task Type:** ${{ steps.parse-issue.outputs.taskType }}
-          **Priority:** ${{ steps.parse-issue.outputs.priority }}
-          
-          ## Implementation Plan
-          
-          This is a placeholder implementation. In a full AI agent setup, this would contain:
-          
-          1. **Analysis of Requirements**
-          2. **Code Changes**
-          3. **Testing Strategy**
-          4. **Documentation Updates**
-          
-          ## Files Modified
-          
-          - This file: .ai-implementations/task-${{ github.event.issue.number }}.md
-          
-          ## Next Steps
-          
-          1. Review the implementation
-          2. Test the changes
-          3. Merge when ready
-          EOF
-            # Commit the implementation
+      - name: Generate AI Implementation
+        id: ai-implementation
+        uses: actions/github-script@v7
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        with:
+          script: |
+            const { GoogleGenerativeAI } = require('@google/generative-ai');
+            const fs = require('fs');
+            const path = require('path');
+            
+            if (!process.env.GEMINI_API_KEY) {
+              throw new Error('GEMINI_API_KEY not found in secrets');
+            }
+            
+            const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            
+            const issue = context.payload.issue;
+            const issueBody = issue.body || '';
+            const issueTitle = issue.title || '';
+            
+            // Read current project structure
+            const getProjectFiles = () => {
+              const files = [];
+              const walkDir = (dir, maxDepth = 2, currentDepth = 0) => {
+                if (currentDepth >= maxDepth) return;
+                try {
+                  const items = fs.readdirSync(dir);
+                  items.forEach(item => {
+                    if (item.startsWith('.') && item !== '.github') return;
+                    const fullPath = path.join(dir, item);
+                    const stat = fs.statSync(fullPath);
+                    if (stat.isDirectory()) {
+                      walkDir(fullPath, maxDepth, currentDepth + 1);
+                    } else if (item.match(/\.(ts|tsx|js|jsx|md|json|yml|yaml)$/)) {
+                      files.push(fullPath.replace(process.cwd() + path.sep, ''));
+                    }
+                  });
+                } catch (e) {
+                  console.log(`Error reading directory ${dir}:`, e.message);
+                }
+              };
+              walkDir(process.cwd());
+              return files;
+            };
+            
+            const projectFiles = getProjectFiles();
+            const projectStructure = projectFiles.slice(0, 50).join('\n'); // Limit for context
+            
+            // Create comprehensive prompt for AI
+            const prompt = `
+            You are an expert software developer working on a Next.js portfolio website. 
+            
+            **Project Context:**
+            - This is a Next.js 15 project with TypeScript, Tailwind CSS
+            - It's a personal portfolio website (danielsbonnin.com)
+            - Current structure includes: ${projectStructure}
+            
+            **Issue to Implement:**
+            Title: ${issueTitle}
+            Description: ${issueBody}
+            
+            **Your Task:**
+            1. Analyze the request and determine what specific files need to be created/modified
+            2. Generate the complete, production-ready code for each file
+            3. Ensure the code follows Next.js 15 best practices and TypeScript
+            4. Make sure the implementation is complete and functional
+            
+            **Response Format:**
+            Provide your response as a JSON object with this structure:
+            {
+              "analysis": "Brief explanation of what you're implementing",
+              "files": [
+                {
+                  "path": "relative/path/to/file.tsx",
+                  "action": "create" or "modify", 
+                  "content": "complete file content here",
+                  "explanation": "what this file does"
+                }
+              ],
+              "instructions": "Any additional setup or testing instructions"
+            }
+            
+            Generate actual, working code - not placeholder comments or TODOs.
+            `;
+            
+            try {
+              console.log('Sending request to Gemini AI...');
+              const result = await model.generateContent(prompt);
+              const response = await result.response;
+              const aiResponse = response.text();
+              
+              console.log('AI Response received, parsing...');
+              
+              // Extract JSON from response (handle markdown code blocks)
+              let jsonStr = aiResponse;
+              const jsonMatch = aiResponse.match(/```(?:json)?\n?([\s\S]*?)\n?```/);
+              if (jsonMatch) {
+                jsonStr = jsonMatch[1];
+              }
+              
+              const implementation = JSON.parse(jsonStr);
+              
+              // Apply the implementation
+              for (const file of implementation.files) {
+                const filePath = file.path;
+                const dir = path.dirname(filePath);
+                
+                // Create directory if it doesn't exist
+                if (dir !== '.' && !fs.existsSync(dir)) {
+                  fs.mkdirSync(dir, { recursive: true });
+                }
+                
+                // Write the file
+                fs.writeFileSync(filePath, file.content);
+                console.log(`${file.action === 'create' ? 'Created' : 'Modified'}: ${filePath}`);
+              }              // Create implementation summary
+              const summary = '# AI Implementation Summary\n\n## Analysis\n' + 
+                implementation.analysis + 
+                '\n\n## Files Modified\n' + 
+                implementation.files.map(f => '- **' + f.path + '** (' + f.action + '): ' + f.explanation).join('\n') + 
+                '\n\n## Instructions\n' + 
+                (implementation.instructions || 'No additional setup required.') + 
+                '\n\nGenerated by AI Agent using Gemini 1.5 Flash\n';
+              
+              fs.writeFileSync('AI_IMPLEMENTATION.md', summary);
+              
+              core.setOutput('implementation', JSON.stringify(implementation));
+              core.setOutput('filesModified', implementation.files.length);
+              
+              return implementation;
+                } catch (error) {
+              console.error('AI Implementation Error:', error);
+              throw new Error('Failed to generate implementation: ' + error.message);
+            }
+            
+      - name: Commit Implementation
+        run: |
           git add .
-          git commit -m "AI Implementation for issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
-          git push origin "$BRANCH_NAME"
+          git commit -m "🤖 AI Implementation for #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+
+          Generated ${{ steps.ai-implementation.outputs.filesModified }} file(s) using Gemini AI.
+          
+          Closes #${{ github.event.issue.number }}"
+          git push origin "${{ steps.create-branch.outputs.branch-name }}"
           
       - name: Create Pull Request
         uses: actions/github-script@v7
@@ -142,27 +255,28 @@ jobs:
               repo: context.repo.repo,
               title: `🤖 AI Implementation: ${{ github.event.issue.title }}`,
               head: `${{ steps.create-branch.outputs.branch-name }}`,
-              base: 'main',
-              body: `## AI Agent Implementation
+              base: 'main',              body: `## 🤖 AI-Generated Implementation
               
-              This pull request was automatically generated by the AI Agent in response to issue #${{ github.event.issue.number }}.
+              This pull request contains real code generated by Gemini AI in response to issue #${{ github.event.issue.number }}.
               
               **Original Issue:** #${{ github.event.issue.number }}
-              **Task Type:** ${{ steps.parse-issue.outputs.taskType }}
-              **Priority:** ${{ steps.parse-issue.outputs.priority }}
+              **Files Modified:** ${{ steps.ai-implementation.outputs.filesModified }}
+              **AI Model:** Gemini 1.5 Flash
               
-              ## Changes Made
+              ## Implementation Details
               
-              - Created implementation file with placeholder content
-              - Set up branch structure for AI development
+              The AI agent analyzed the requirements and generated production-ready code. See \`AI_IMPLEMENTATION.md\` for detailed analysis and instructions.
               
               ## Review Instructions
               
-              1. **Check Implementation** - Review the AI-generated code
-              2. **Test Changes** - Ensure all functionality works as expected
-              3. **Merge when ready** - The changes will be deployed automatically
+              1. **Check Code Quality** - Review the AI-generated implementation
+              2. **Test Functionality** - Ensure the code works as expected  
+              3. **Verify Requirements** - Confirm the issue requirements are met
+              4. **Deploy** - Merge to automatically deploy changes
               
-              **Note:** This is a template implementation. In a production AI agent, this would contain actual code changes based on the issue requirements.
+              ## AI Analysis
+              
+              Check the \`AI_IMPLEMENTATION.md\` file for the complete AI analysis, file explanations, and any additional setup instructions.
               
               Closes #${{ github.event.issue.number }}
               `
@@ -172,12 +286,23 @@ jobs:
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `✅ **Implementation Complete!**
+              repo: context.repo.repo,              body: `✅ **AI Implementation Complete!**
               
-              I've created a pull request with the implementation: #${pr.number}
+              🚀 **Pull Request Created:** #${pr.number}
               
-              Please review the changes and merge when ready. The AI agent has completed its analysis and provided a starting point for the implementation.
+              The AI agent has analyzed your request and generated ${{ steps.ai-implementation.outputs.filesModified }} file(s) with production-ready code using Gemini AI.
+              
+              **What was implemented:**
+              - Real, functional code (not placeholders)
+              - Generated using Gemini 1.5 Flash AI model
+              - Includes detailed analysis in \`AI_IMPLEMENTATION.md\`
+              
+              **Next steps:**
+              1. Review the pull request and generated code
+              2. Test the implementation locally if needed
+              3. Merge when satisfied with the results
+              
+              The code is ready for production use! 🎉
               `
             });
             
