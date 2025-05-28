@@ -163,27 +163,38 @@ jobs:
             **Issue to Implement:**
             Title: ${issueTitle}
             Description: ${issueBody}
-            
-            **Your Task:**
+              **Your Task:**
             1. Analyze the request and determine what specific files need to be created/modified
             2. Generate the complete, production-ready code for each file
             3. Ensure the code follows Next.js 15 best practices and TypeScript
             4. Make sure the implementation is complete and functional
             
             **Response Format:**
-            Provide your response as a JSON object with this structure:
+            You MUST respond with valid JSON only. Use this exact structure:
+            
             {
-              "analysis": "Brief explanation of what you're implementing",
+              "analysis": "Brief explanation of what you are implementing",
               "files": [
                 {
                   "path": "relative/path/to/file.tsx",
-                  "action": "create" or "modify", 
-                  "content": "complete file content here",
+                  "action": "create",
+                  "content": "FILE_CONTENT_HERE",
                   "explanation": "what this file does"
                 }
               ],
               "instructions": "Any additional setup or testing instructions"
             }
+            
+            **CRITICAL JSON REQUIREMENTS:**
+            - Use double quotes for all strings
+            - For the "content" field, replace all newlines with \\n
+            - Escape all backslashes as \\\\
+            - Escape all double quotes as \\"
+            - Do NOT use backticks (`) anywhere in the JSON
+            - The content should be a single string with \\n for line breaks
+            
+            Example of proper content formatting:
+            "content": "import React from 'react';\\n\\nconst Component = () => {\\n  return <div>Hello</div>;\\n};"
             
             Generate actual, working code - not placeholder comments or TODOs.
             `;
@@ -193,8 +204,7 @@ jobs:
               const result = await model.generateContent(prompt);
               const response = await result.response;
               const aiResponse = response.text();
-              
-              console.log('AI Response received, parsing...');
+                console.log('AI Response received, parsing...');
               
               // Extract JSON from response (handle markdown code blocks)
               let jsonStr = aiResponse;
@@ -203,7 +213,40 @@ jobs:
                 jsonStr = jsonMatch[1];
               }
               
-              const implementation = JSON.parse(jsonStr);
+              // Clean up common JSON issues before parsing
+              jsonStr = jsonStr.trim();
+              
+              // Try to parse JSON, with better error handling
+              let implementation;
+              try {
+                implementation = JSON.parse(jsonStr);
+              } catch (parseError) {
+                console.log('Initial JSON parse failed, attempting to fix common issues...');
+                console.log('Parse error:', parseError.message);
+                console.log('JSON string preview:', jsonStr.substring(0, 500));
+                
+                // Try to fix common issues
+                let fixedJson = jsonStr;
+                
+                // Fix unescaped backticks in content
+                fixedJson = fixedJson.replace(/"content":\s*"([^"]*`[^"]*)"/, (match, content) => {
+                  const escapedContent = content.replace(/`/g, '\\`').replace(/\\/g, '\\\\');
+                  return `"content": "${escapedContent}"`;
+                });
+                
+                // Try parsing again
+                try {
+                  implementation = JSON.parse(fixedJson);
+                  console.log('Successfully parsed JSON after fixes');
+                } catch (secondError) {
+                  console.error('Failed to parse JSON even after fixes:', secondError.message);
+                  throw new Error(`Invalid JSON response from AI. Parse error: ${secondError.message}. Response preview: ${jsonStr.substring(0, 200)}...`);
+                }
+              }
+              
+              if (!implementation || !implementation.files || !Array.isArray(implementation.files)) {
+                throw new Error('Invalid implementation format: missing files array');
+              }
               
               // Apply the implementation
               for (const file of implementation.files) {
