@@ -44,29 +44,28 @@ jobs:
           echo "REPO_STRUCTURE<<EOF" >> $GITHUB_OUTPUT
           find . -type f -name "*.tsx" -o -name "*.ts" -o -name "*.js" -o -name "*.jsx" | head -20 >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          
-      - name: Parse Issue and Generate Implementation Plan
+            - name: Parse Issue and Generate Implementation Plan
         id: ai-planning
         uses: actions/github-script@v7
         with:
           script: |
-            const issue = context.payload.issue;
-            const issueBody = issue.body || '';
-            const issueTitle = issue.title || '';
+            const issueData = context.payload.issue;
+            const issueBody = issueData.body || '';
+            const issueTitle = issueData.title || '';
             
             // Extract structured information from issue
             const taskDescription = issueBody.match(/### Task Description\s*([\s\S]*?)(?=###|$)/)?.[1]?.trim() || issueTitle;
             const requirements = issueBody.match(/### Requirements[\s\S]*?\s*([\s\S]*?)(?=###|$)/)?.[1]?.trim() || '';
             const files = issueBody.match(/### Files to Modify[\s\S]*?\s*([\s\S]*?)(?=###|$)/)?.[1]?.trim() || '';
-            const context = issueBody.match(/### Additional Context[\s\S]*?\s*([\s\S]*?)(?=###|$)/)?.[1]?.trim() || '';
+            const additionalContext = issueBody.match(/### Additional Context[\s\S]*?\s*([\s\S]*?)(?=###|$)/)?.[1]?.trim() || '';
             
             // Create implementation plan
             const plan = {
               task: taskDescription,
               requirements: requirements.split('\n').filter(r => r.trim()),
               targetFiles: files.split('\n').filter(f => f.trim()),
-              context: context,
-              issueNumber: issue.number,
+              context: additionalContext,
+              issueNumber: issueData.number,
               title: issueTitle
             };
             
