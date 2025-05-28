@@ -73,8 +73,7 @@ jobs:
               **Task Analysis:**
               - **Type:** ${{ steps.parse-issue.outputs.taskType }}
               - **Priority:** ${{ steps.parse-issue.outputs.priority }}
-              - **Status:** In Progress 🔄
-                I'll update this issue with my progress. Expected completion time: 5-10 minutes.
+              - **Status:** In Progress 🔄              I'll update this issue with my progress. Expected completion time: 5-10 minutes.
               `
             });
             
@@ -96,7 +95,8 @@ jobs:
           git config --global user.email 'ai-agent@danielsbonnin.com'
           
           # Create a new branch for this issue
-          BRANCH_NAME="ai-task-${{ github.event.issue.number }}-$(date +%s)"          git checkout -b "$BRANCH_NAME"
+          BRANCH_NAME="ai-task-${{ github.event.issue.number }}-$(date +%s)"
+          git checkout -b "$BRANCH_NAME"
           echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           
       - name: Generate AI Implementation
