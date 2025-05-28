@@ -27,11 +27,6 @@ jobs:
           node-version: '20'
           cache: 'npm'
           
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        with:
-          static_site_generator: next
-          
       - name: Restore cache
         uses: actions/cache@v4
         with:
@@ -48,10 +43,19 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          GITHUB_PAGES: true
+          
+      - name: Debug output directory
+        run: |
+          echo "Checking output directory contents:"
+          ls -la ./out || echo "out directory does not exist"
+          echo "Checking if .next exists:"
+          ls -la ./.next || echo ".next directory does not exist"
+          echo "Current directory contents:"
+          ls -la ./
         
       - name: Add nojekyll file
         run: |
-          mkdir -p ./out
           touch ./out/.nojekyll
         
       - name: Upload artifact
