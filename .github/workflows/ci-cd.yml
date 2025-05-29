@@ -30,28 +30,3 @@ jobs:
         
       - name: Run tests (if any)
         run: npm test --if-present --passWithNoTests
-        
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Build application
-        run: npm run build
-        
-      # Deployment is now handled by deploy-pages.yml workflow
-      - name: Deployment status
-        run: echo "Deployment handled by GitHub Pages workflow"
