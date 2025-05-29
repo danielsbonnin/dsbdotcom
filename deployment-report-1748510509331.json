@@ -1,0 +1,129 @@
+{
+  "sessionId": 1748510509331,
+  "startTime": "2025-05-29T09:21:49.331Z",
+  "endTime": "2025-05-29T09:21:56.631Z",
+  "duration": "7 seconds",
+  "deployLog": [
+    {
+      "timestamp": "2025-05-29T09:21:49.344Z",
+      "level": "PROGRESS",
+      "message": "Checking Git status...",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:49.378Z",
+      "level": "SUCCESS",
+      "message": "Found 1 changes to commit",
+      "data": {
+        "changes": [
+          "?? deployment-report-1748510476154.json"
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-05-29T09:21:49.379Z",
+      "level": "PROGRESS",
+      "message": "Adding files to Git...",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:49.420Z",
+      "level": "SUCCESS",
+      "message": "Files added to staging area",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:49.474Z",
+      "level": "SUCCESS",
+      "message": "Changes committed successfully",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:49.474Z",
+      "level": "DEPLOY",
+      "message": "Pushing to remote repository...",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:49.498Z",
+      "level": "INFO",
+      "message": "Pushing to branch: test-pr-approval",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:50.858Z",
+      "level": "SUCCESS",
+      "message": "Successfully pushed to remote repository",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:50.858Z",
+      "level": "PROGRESS",
+      "message": "Monitoring workflow triggers...",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:56.574Z",
+      "level": "SUCCESS",
+      "message": "Found 3 recent workflow runs",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:56.574Z",
+      "level": "INFO",
+      "message": "Workflow 1: CI/CD Pipeline",
+      "data": {
+        "status": "queued",
+        "conclusion": "running",
+        "runNumber": 56,
+        "createdAt": "2025-05-29T09:21:56Z"
+      }
+    },
+    {
+      "timestamp": "2025-05-29T09:21:56.574Z",
+      "level": "INFO",
+      "message": "Workflow 2: CI/CD Pipeline",
+      "data": {
+        "status": "in_progress",
+        "conclusion": "running",
+        "runNumber": 55,
+        "createdAt": "2025-05-29T09:21:23Z"
+      }
+    },
+    {
+      "timestamp": "2025-05-29T09:21:56.574Z",
+      "level": "INFO",
+      "message": "Workflow 3: CI/CD Pipeline",
+      "data": {
+        "status": "completed",
+        "conclusion": "failure",
+        "runNumber": 54,
+        "createdAt": "2025-05-29T09:18:44Z"
+      }
+    },
+    {
+      "timestamp": "2025-05-29T09:21:56.575Z",
+      "level": "WARNING",
+      "message": "No AI Agent workflows triggered yet",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:56.575Z",
+      "level": "PROGRESS",
+      "message": "Validating deployment...",
+      "data": null
+    },
+    {
+      "timestamp": "2025-05-29T09:21:56.631Z",
+      "level": "SUCCESS",
+      "message": "Deployment validation passed",
+      "data": null
+    }
+  ],
+  "summary": {
+    "totalSteps": 16,
+    "successSteps": 6,
+    "errorSteps": 0,
+    "warningSteps": 1
+  }
+}
