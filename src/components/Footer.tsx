@@ -1,10 +1,1 @@
-const Footer: React.FC = () => {
-  const currentYear = new Date().getFullYear();
-  return (
-    <footer className="bg-gray-800 text-white p-4 text-center">
-      <p>&copy; {currentYear} Daniels Bonnin. All rights reserved.</p>
-    </footer>
-  );
-};
-
-export default Footer;
+import Link from 'next/link'; \n\ninterface FooterProps {} \n\nconst Footer: React.FC<FooterProps> = () => { \n  return ( \n    <footer className="bg-background-secondary p-4 text-center text-text-secondary"> \n      <p>&copy; {new Date().getFullYear()} Daniel's Bonnin. All rights reserved.</p> \n    </footer> \n  ); \n}; \n\nexport default Footer; \n
