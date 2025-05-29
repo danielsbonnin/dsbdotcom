@@ -96,9 +96,10 @@ jobs:
         with:
           script: |
             const { notifyProcessingStart } = require('./.github/scripts/ai-agent/notifications.js');
-            const taskDataStr = `${{ needs.parse-issue.outputs.task-data }}`;
-            const taskData = JSON.parse(taskDataStr);
+            const taskData = JSON.parse(process.env.TASK_DATA);
             await notifyProcessingStart({ github, context, taskData });
+        env:
+          TASK_DATA: ${{ needs.parse-issue.outputs.task-data }}
 
   ai-implementation:
     name: Generate AI Implementation
@@ -145,11 +146,11 @@ jobs:
         uses: actions/github-script@v7
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TASK_DATA: ${{ needs.parse-issue.outputs.task-data }}
         with:
           script: |
             const { generateImplementation } = require('./.github/scripts/ai-agent/generate-implementation.js');
-            const taskDataStr = `${{ needs.parse-issue.outputs.task-data }}`;
-            const taskData = JSON.parse(taskDataStr);
+            const taskData = JSON.parse(process.env.TASK_DATA);
             return await generateImplementation({ github, context, core, taskData });
             
       - name: Commit and Push Changes
@@ -187,11 +188,9 @@ jobs:
         with:
           script: |
             const { createImplementationPR } = require('./.github/scripts/ai-agent/create-pr.js');
-            const taskDataStr = `${{ needs.parse-issue.outputs.task-data }}`;
-            const taskData = JSON.parse(taskDataStr);
+            const taskData = JSON.parse(process.env.TASK_DATA);
             const branchName = '${{ needs.ai-implementation.outputs.branch-name }}';
-            const implementationResultStr = `${{ needs.ai-implementation.outputs.implementation-result }}`;
-            const implementationResult = JSON.parse(implementationResultStr);
+            const implementationResult = JSON.parse(process.env.IMPLEMENTATION_RESULT);
             
             await createImplementationPR({ 
               github, 
@@ -200,6 +199,9 @@ jobs:
               branchName, 
               implementationResult 
             });
+        env:
+          TASK_DATA: ${{ needs.parse-issue.outputs.task-data }}
+          IMPLEMENTATION_RESULT: ${{ needs.ai-implementation.outputs.implementation-result }}
 
   handle-failure:
     name: Handle Failure
