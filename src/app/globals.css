@@ -2,72 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-  
-  /* Custom colors */
-  --professional-blue: #004E98;
-  --vibrant-accent: #FF6700;
-  --light-bg: #F0F4F8;
-  --dark-text: #333333;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: var(--light-bg);
-  font-family: var(--font-inter), sans-serif;
+  margin: 0;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f8f8f8; /* Light gray background */
+  color: #333; /* Dark gray text */
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: Georgia, serif;
-  color: var(--professional-blue);
+/* Optional: Reset some default styles */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-a {
-  color: var(--vibrant-accent);
-}
-
-a:hover {
-  text-decoration: underline;
-  color: var(--light-bg);
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Responsive Font Sizes */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  p {
+    font-size: 1rem;
   }
 }
 
-/* Custom Navbar styling to use theme colors */
-nav {
-  background-color: var(--professional-blue);
-  color: white;
-}
-
-nav a:hover {
-  color: var(--light-bg);
-}
-
-/* Custom Footer styling */
-footer {
-  background-color: var(--light-bg);
-  color: var(--dark-text);
-}
-
-@layer base {
-  body {
-    font-family: var(--font-inter), sans-serif;
-    background: var(--light-bg);
-    color: var(--dark-text);
-  }
-}
+/* Other global styles can be added here */
