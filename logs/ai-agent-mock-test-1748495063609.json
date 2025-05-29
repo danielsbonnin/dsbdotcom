@@ -1,0 +1,1028 @@
+[
+  {
+    "timestamp": "2025-05-29T05:04:23.606Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.606Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.606Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.606Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.606Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.606Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "🔍 Testing notifications...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "GitHub API: Create comment",
+    "data": {
+      "issue": 42,
+      "bodyPreview": "🤖 **AI Agent Assigned**\n  \nI've been assigned to work on this task. I'll analyze the requirements a..."
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "GitHub API: Add labels",
+    "data": {
+      "issue_number": 42,
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "labels": [
+        "in-progress",
+        "ai-working"
+      ]
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "✅ Start notification sent",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "GitHub API: Create comment",
+    "data": {
+      "issue": 42,
+      "bodyPreview": "❌ **AI Agent Processing Failed**\n      \n      I encountered an error while processing this task. Ple..."
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "GitHub API: Remove label",
+    "data": {
+      "issue_number": 42,
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "name": "ai-working"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "GitHub API: Add labels",
+    "data": {
+      "issue_number": 42,
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "labels": [
+        "ai-failed"
+      ]
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "✅ Failure notification validated",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "🔍 Testing AI implementation (mocked)...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "✅ Mock file created: src/components/HeroSection.tsx",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "✅ Mock file created: src/components/HeroSection.module.css",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "✅ Mock implementation completed",
+    "data": {
+      "filesCreated": 2,
+      "summaryFile": "C:\\code\\danielsbonnin.com\\temp-test\\AI_IMPLEMENTATION.md"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.607Z",
+    "message": "🔍 Testing pull request creation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: Create pull request",
+    "data": {
+      "title": "🤖 AI Implementation: Create a new hero section component",
+      "head": "ai-task-42-mock",
+      "base": "main"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: Create comment",
+    "data": {
+      "issue": 42,
+      "bodyPreview": "✅ **AI Implementation Complete!**\n\n🚀 **Pull Request:** #816\n\nThe AI agent has successfully analyzed..."
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: Add labels",
+    "data": {
+      "issue_number": 42,
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "labels": [
+        "ai-implemented",
+        "ready-for-review"
+      ]
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: Remove label",
+    "data": {
+      "issue_number": 42,
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "name": "ai-working"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: Remove label",
+    "data": {
+      "issue_number": 42,
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "name": "in-progress"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Pull request creation passed",
+    "data": {
+      "prNumber": 816,
+      "url": "https://github.com/danielsbonnin/danielsbonnin.com/pull/975"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing workflow performance...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing trigger validation...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Issue #42: AI Agent trigger detected",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: issue-data",
+    "data": "{\"number\":42,\"title\":\"Create a new hero section component\",\"body\":\"### Task Type\\nComponent Development\\n\\n### Priority\\nHigh\\n\\n### Task Description\\nCreate a modern hero section component for the homepage with the following features:\\n- Eye-catching headline and subheading\\n- Call-to-action buttons\\n- Background gradient or image\\n- Responsive design\\n- Animation effects\\n\\n### Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"author\":\"danielsbonnin\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-process",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Trigger validation passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing duplicate check...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "GitHub API: List comments",
+    "data": {
+      "owner": "danielsbonnin",
+      "repo": "danielsbonnin.com",
+      "issue_number": 42
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: AI Agent not yet processed issue #42 - proceeding",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: should-continue",
+    "data": "true"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Duplicate check passed",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "🔍 Testing issue parsing...",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Info: Parsed task data: {\n  \"issueNumber\": 42,\n  \"title\": \"Create a new hero section component\",\n  \"description\": \"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\n  \"taskType\": \"Component Development\",\n  \"priority\": \"High\",\n  \"requirements\": null,\n  \"author\": \"danielsbonnin\",\n  \"labels\": [\n    \"ai-agent\",\n    \"enhancement\",\n    \"frontend\"\n  ],\n  \"createdAt\": \"2025-05-28T10:00:00Z\"\n}",
+    "data": null
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "Core Output: task-data",
+    "data": "{\"issueNumber\":42,\"title\":\"Create a new hero section component\",\"description\":\"Requirements\\n- Use TypeScript and React\\n- Style with Tailwind CSS\\n- Include hover effects and animations\\n- Make it responsive across all devices\\n- Add proper accessibility attributes\",\"taskType\":\"Component Development\",\"priority\":\"High\",\"requirements\":null,\"author\":\"danielsbonnin\",\"labels\":[\"ai-agent\",\"enhancement\",\"frontend\"],\"createdAt\":\"2025-05-28T10:00:00Z\"}"
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Issue parsing passed",
+    "data": {
+      "title": "Create a new hero section component",
+      "type": "Component Development",
+      "priority": "High"
+    }
+  },
+  {
+    "timestamp": "2025-05-29T05:04:23.608Z",
+    "message": "✅ Performance test completed",
+    "data": {
+      "totalTime": "0ms",
+      "averageIteration": "0.00ms",
+      "minIteration": "0ms",
+      "maxIteration": "0ms",
+      "iterations": 10
+    }
+  }
+]

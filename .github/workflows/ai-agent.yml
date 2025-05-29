@@ -1,216 +1,216 @@
 name: AI Agent Automation
+
 on:
   issues:
     types: [opened, labeled]
   issue_comment:
     types: [created]
 
+env:
+  NODE_VERSION: "20"
+
 jobs:
-  check-if-should-process:
-    if: contains(github.event.issue.labels.*.name, 'ai-agent') || (github.event.comment && contains(github.event.comment.body, '@ai-agent'))
+  validate-trigger:
+    name: Validate AI Agent Trigger
     runs-on: ubuntu-latest
     permissions:
       issues: read
     outputs:
-      should-process: ${{ steps.check-duplicate.outputs.result }}
+      should-process: ${{ steps.validate.outputs.should-process }}
+      issue-data: ${{ steps.validate.outputs.issue-data }}
     steps:
-      - name: Check if AI Agent Already Processed
-        id: check-duplicate
+      - name: Validate Trigger Conditions
+        id: validate
         uses: actions/github-script@v7
         with:
-          result-encoding: string
           script: |
-            const issue = context.payload.issue;
-            if (!issue) {
-              console.log('No issue found in context');
-              return 'false';
-            }
+            const { validateTrigger } = require('./.github/scripts/ai-agent/validate-trigger.js');
+            return await validateTrigger({ github, context, core });
 
-            // Check for existing AI agent comments
-            const comments = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.number
-            });
+  check-duplicate:
+    name: Check for Duplicate Processing
+    needs: validate-trigger
+    if: needs.validate-trigger.outputs.should-process == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    outputs:
+      should-continue: ${{ steps.check.outputs.should-continue }}
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Check for Existing AI Processing
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { checkDuplicateProcessing } = require('./.github/scripts/ai-agent/check-duplicate.js');
+            return await checkDuplicateProcessing({ github, context, core });
 
-            const aiAgentComment = comments.data.find(comment => 
-              comment.user.login === 'github-actions[bot]' && 
-              comment.body.includes('🤖 **AI Agent Assigned**')
-            );
+  parse-issue:
+    name: Parse Issue Content
+    needs: [validate-trigger, check-duplicate]
+    if: needs.check-duplicate.outputs.should-continue == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    outputs:
+      task-data: ${{ steps.parse.outputs.task-data }}
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Parse Issue Content
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { parseIssueContent } = require('./.github/scripts/ai-agent/parse-issue.js');
+            return await parseIssueContent({ github, context, core });
 
-            if (aiAgentComment) {
-              console.log(`AI Agent already processed issue #${issue.number} - skipping duplicate`);
-              return 'false';
-            } else {
-              console.log(`AI Agent not yet processed issue #${issue.number} - proceeding`);
-              return 'true';
-            }
-  ai-agent-handler:
-    needs: check-if-should-process
-    if: needs.check-if-should-process.outputs.should-process == 'true'
+  notify-start:
+    name: Notify Processing Start
+    needs: [validate-trigger, check-duplicate, parse-issue]
+    if: needs.check-duplicate.outputs.should-continue == 'true'
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      contents: write
-      pull-requests: write
-
     steps:
-      - name: Checkout repository
+      - name: Checkout Scripts
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Post Start Notification
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { notifyProcessingStart } = require('./.github/scripts/ai-agent/notifications.js');
+            const taskData = JSON.parse('${{ needs.parse-issue.outputs.task-data }}');
+            await notifyProcessingStart({ github, context, taskData });
 
-      - name: Setup Node.js
+  ai-implementation:
+    name: Generate AI Implementation
+    needs: [validate-trigger, check-duplicate, parse-issue, notify-start]
+    if: needs.check-duplicate.outputs.should-continue == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      branch-name: ${{ steps.create-branch.outputs.branch-name }}
+      implementation-result: ${{ steps.generate.outputs.implementation-result }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Parse Issue Content
-        id: parse-issue
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const issue = context.payload.issue;
-            const issueBody = issue.body || '';
-
-            // Extract information from issue body
-            const taskType = issueBody.match(/Task Type[\s\S]*?### (.+)/)?.[1]?.trim() || 'Unknown';
-            const priority = issueBody.match(/Priority[\s\S]*?### (.+)/)?.[1]?.trim() || 'Medium';
-            const description = issueBody.match(/Task Description[\s\S]*?### ([\s\S]+?)###/)?.[1]?.trim() || issue.title;
-
-            console.log('Parsed issue:', { taskType, priority, description });
-
-            // Set outputs properly
-            core.setOutput('taskType', taskType);
-            core.setOutput('priority', priority);
-            core.setOutput('description', description);
-            core.setOutput('issueNumber', issue.number);
-            core.setOutput('title', issue.title);
-
-            return {
-              taskType,
-              priority,
-              description,
-              issueNumber: issue.number,
-              title: issue.title
-            };
-
-      - name: Comment on Issue
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `🤖 **AI Agent Assigned**
-              
-              I've been assigned to work on this task. I'll analyze the requirements and create a pull request with the implementation.
-              
-              **Task Analysis:**
-              - **Type:** ${context.payload.issue.title}
-              - **Priority:** Medium
-              - **Status:** In Progress 🔄
-              
-              I'll update this issue with my progress. Expected completion time: 5-10 minutes.
-              `
-            });
-
-      - name: Add Progress Label
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['in-progress', 'ai-working']
-            });
-
-      - name: Create AI Implementation Branch
-        id: create-branch
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          
+      - name: Install Dependencies
+        run: |
+          npm ci --prefer-offline --no-audit
+          
+      - name: Configure Git
         run: |
           git config --global user.name 'AI Agent'
           git config --global user.email 'ai-agent@danielsbonnin.com'
-
-          # Create a new branch for this issue
+          
+      - name: Create Implementation Branch
+        id: create-branch
+        run: |
           BRANCH_NAME="ai-task-${{ github.event.issue.number }}-$(date +%s)"
           git checkout -b "$BRANCH_NAME"
           echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-
+          
       - name: Generate AI Implementation
-        id: ai-implementation
+        id: generate
         uses: actions/github-script@v7
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         with:
           script: |
-            const { GoogleGenerativeAI } = require('@google/generative-ai');
-            const fs = require('fs');
-            const path = require('path');
+            const { generateImplementation } = require('./.github/scripts/ai-agent/generate-implementation.js');
+            const taskData = JSON.parse('${{ needs.parse-issue.outputs.task-data }}');
+            return await generateImplementation({ github, context, core, taskData });
+            
+      - name: Commit and Push Changes
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add .
+            git commit -m "🤖 AI Implementation for #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+            
+            Generated by AI Agent using Gemini AI
+            
+            Closes #${{ github.event.issue.number }}"
+            git push origin "${{ steps.create-branch.outputs.branch-name }}"
+          else
+            echo "No changes to commit"
+            exit 1
+          fi
 
-            if (!process.env.GEMINI_API_KEY) {
-              throw new Error('GEMINI_API_KEY not found in secrets');
-            }
+  create-pull-request:
+    name: Create Pull Request
+    needs: [parse-issue, ai-implementation]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Create Pull Request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { createImplementationPR } = require('./.github/scripts/ai-agent/create-pr.js');
+            const taskData = JSON.parse('${{ needs.parse-issue.outputs.task-data }}');
+            const branchName = '${{ needs.ai-implementation.outputs.branch-name }}';
+            const implementationResult = JSON.parse('${{ needs.ai-implementation.outputs.implementation-result }}');
+            
+            await createImplementationPR({ 
+              github, 
+              context, 
+              taskData, 
+              branchName, 
+              implementationResult 
+            });
 
-            const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-            const issue = context.payload.issue;
-            const issueBody = issue.body || '';
-            const issueTitle = issue.title || '';
-
-            // Read current project structure
-            const getProjectFiles = () => {
-              const files = [];
-              const walkDir = (dir, maxDepth = 2, currentDepth = 0) => {
-                if (currentDepth >= maxDepth) return;
-                try {
-                  const items = fs.readdirSync(dir);
-                  items.forEach(item => {
-                    if (item.startsWith('.') && item !== '.github') return;
-                    const fullPath = path.join(dir, item);
-                    const stat = fs.statSync(fullPath);
-                    if (stat.isDirectory()) {
-                      walkDir(fullPath, maxDepth, currentDepth + 1);
-                    } else if (item.match(/\.(ts|tsx|js|jsx|md|json|yml|yaml)$/)) {
-                      files.push(fullPath.replace(process.cwd() + path.sep, ''));
-                    }
-                  });
-                } catch (e) {
-                  console.log(`Error reading directory ${dir}:`, e.message);
-                }
-              };
-              walkDir(process.cwd());
-              return files;
-            };
-
-            const projectFiles = getProjectFiles();
-            const projectStructure = projectFiles.slice(0, 50).join('\n');
-
-            // Create comprehensive prompt for AI
-            const prompt = `
-            You are an expert software developer working on a Next.js portfolio website. 
-
-            **Project Context:**
-            - This is a Next.js 15 project with TypeScript, Tailwind CSS
-            - It's a personal portfolio website (danielsbonnin.com)
-            - Current structure includes: ${projectStructure}
-              **Issue to Implement:**
-            Title: ${issueTitle}
-            Description: ${issueBody}
-
-            **Your Task:**
-            1. Analyze the request and determine what specific files need to be created/modified
-            2. Generate the complete, production-ready code for each file
-            3. Ensure the code follows Next.js 15 best practices and TypeScript
-            4. Make sure the implementation is complete and functional
-
-            **Response Format:**
-            You MUST respond with valid JSON only. Use this exact structure:
-
+  handle-failure:
+    name: Handle Failure
+    needs: [validate-trigger, check-duplicate, parse-issue, notify-start, ai-implementation, create-pull-request]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Notify Failure
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { notifyProcessingFailure } = require('./.github/scripts/ai-agent/notifications.js');
+            await notifyProcessingFailure({ github, context });
             {
               "analysis": "Brief explanation of what you are implementing",
               "files": [
