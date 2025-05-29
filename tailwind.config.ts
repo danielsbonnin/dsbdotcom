@@ -6,12 +6,21 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
-      colors: {
-        'professional-blue': '#004E98', // A professional blue
-        'vibrant-accent': '#FF6700',   // A vibrant orange accent
-        'light-bg': '#F0F4F8',        // Light and airy background
-        'dark-text': '#333333',       // For readability
+    extend: {      colors: {
+        'professional-blue': '#0066CC', // Improved professional blue with better contrast
+        'professional-blue-dark': '#004E98', // Darker blue for backgrounds
+        'vibrant-accent': '#E55A00',   // Improved orange with better contrast
+        'vibrant-accent-light': '#FF8533', // Lighter orange for hover states
+        'light-bg': '#FAFBFC',        // Slightly lighter background for better contrast
+        'neutral-50': '#F8FAFC',      // Very light neutral
+        'neutral-100': '#F1F5F9',     // Light neutral background
+        'neutral-200': '#E2E8F0',     // Light border/divider
+        'neutral-600': '#475569',     // Medium contrast text
+        'neutral-700': '#334155',     // High contrast text
+        'neutral-800': '#1E293B',     // Very high contrast text
+        'neutral-900': '#0F172A',     // Maximum contrast text
+        'dark-text': '#1E293B',       // High contrast dark text
+        'medium-text': '#475569',     // Medium contrast text for secondary content
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'sans-serif'], // Using Inter from next/font/google

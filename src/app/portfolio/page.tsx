@@ -43,7 +43,7 @@ const PortfolioPage = () => {
   return (
     <div className="py-8">
       <section className="text-center mb-12">        <h1 className="text-4xl font-bold text-professional-blue">My Portfolio</h1>
-        <p className="text-lg text-gray-700 mt-2 max-w-xl mx-auto">
+        <p className="text-lg text-neutral-700 mt-2 max-w-xl mx-auto">
           Here are some of the projects I&rsquo;ve worked on. Each one represents a unique challenge and an opportunity to learn and grow.
         </p>
       </section>
@@ -63,11 +63,10 @@ const PortfolioPage = () => {
                     {tag}
                   </span>
                 ))}
-              </div>
-              <p className="text-gray-700 mb-4 text-sm flex-grow">{project.description}</p>
+              </div>              <p className="text-neutral-700 mb-4 text-sm flex-grow">{project.description}</p>
               <div>
-                <h4 className="font-semibold text-gray-800 mb-1">Key Features:</h4>
-                <ul className="list-disc list-inside text-gray-600 text-sm mb-4">
+                <h4 className="font-semibold text-neutral-800 mb-1">Key Features:</h4>
+                <ul className="list-disc list-inside text-neutral-700 text-sm mb-4">
                   {project.features.map(feature => <li key={feature}>{feature}</li>)}
                 </ul>
               </div>
@@ -84,7 +83,7 @@ const PortfolioPage = () => {
                   <Link href={project.repoLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-professional-blue font-semibold transition duration-300">
+                    className="text-neutral-700 hover:text-professional-blue font-semibold transition duration-300">
                       View Repository
                   </Link>
                 )}

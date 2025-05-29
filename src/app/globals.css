@@ -7,11 +7,20 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   
-  /* Custom colors */
-  --professional-blue: #004E98;
-  --vibrant-accent: #FF6700;
-  --light-bg: #F0F4F8;
-  --dark-text: #333333;
+  /* Custom colors - Updated for better contrast */
+  --professional-blue: #0066CC;
+  --professional-blue-dark: #004E98;
+  --vibrant-accent: #E55A00;
+  --vibrant-accent-light: #FF8533;
+  --light-bg: #FAFBFC;
+  --neutral-50: #F8FAFC;
+  --neutral-100: #F1F5F9;
+  --neutral-200: #E2E8F0;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1E293B;
+  --neutral-900: #0F172A;
+  --dark-text: #1E293B;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,7 +32,7 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: var(--neutral-800);
   background: var(--light-bg);
   font-family: var(--font-inter), sans-serif;
 }
