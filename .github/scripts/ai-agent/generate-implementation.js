@@ -30,13 +30,14 @@ async function generateImplementation({ github, context, core, taskData }) {
     
     core.info('Processing AI response...');
     const implementation = parseAIResponse(aiResponse);
-    
-    // Apply implementation
+      // Apply implementation
     const implementationSummary = await applyImplementation(implementation, taskData);
     
-    core.setOutput('implementation-result', JSON.stringify(implementationSummary));
+    // Ensure proper JSON serialization
+    const resultString = JSON.stringify(implementationSummary);
+    core.setOutput('implementation-result', resultString);
     
-    return { 'implementation-result': JSON.stringify(implementationSummary) };
+    return { 'implementation-result': resultString };
     
   } catch (error) {
     core.setFailed(`AI implementation failed: ${error.message}`);
