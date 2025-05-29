@@ -9,14 +9,46 @@ jobs:
   ai-agent-handler:
     if: contains(github.event.issue.labels.*.name, 'ai-agent') || (github.event.comment && contains(github.event.comment.body, '@ai-agent'))
     runs-on: ubuntu-latest
-    
     permissions:
       issues: write
       contents: write
       pull-requests: write
       
     steps:
+      - name: Check if AI Agent Already Processed
+        id: check-processed
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const issue = context.payload.issue;
+            if (!issue) {
+              console.log('No issue found in context');
+              return 'false';
+            }
+            
+            // Check for existing AI agent comments
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number
+            });
+            
+            const aiAgentComment = comments.data.find(comment => 
+              comment.user.login === 'github-actions[bot]' && 
+              comment.body.includes('🤖 **AI Agent Assigned**')
+            );
+            
+            if (aiAgentComment) {
+              console.log(`AI Agent already processed issue #${issue.number}`);
+              return 'false';
+            } else {
+              console.log(`AI Agent not yet processed issue #${issue.number}`);
+              return 'true';
+            }
+            
       - name: Checkout repository
+        if: steps.check-processed.outputs.result == 'true'
         uses: actions/checkout@v4
         
       - name: Setup Node.js
