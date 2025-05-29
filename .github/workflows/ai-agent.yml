@@ -6,17 +6,16 @@ on:
     types: [created]
 
 jobs:
-  ai-agent-handler:
+  check-if-should-process:
     if: contains(github.event.issue.labels.*.name, 'ai-agent') || (github.event.comment && contains(github.event.comment.body, '@ai-agent'))
     runs-on: ubuntu-latest
     permissions:
-      issues: write
-      contents: write
-      pull-requests: write
-      
+      issues: read
+    outputs:
+      should-process: ${{ steps.check-duplicate.outputs.result }}
     steps:
       - name: Check if AI Agent Already Processed
-        id: check-processed
+        id: check-duplicate
         uses: actions/github-script@v7
         with:
           result-encoding: string
@@ -26,40 +25,48 @@ jobs:
               console.log('No issue found in context');
               return 'false';
             }
-            
+
             // Check for existing AI agent comments
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue.number
             });
-            
+
             const aiAgentComment = comments.data.find(comment => 
               comment.user.login === 'github-actions[bot]' && 
               comment.body.includes('🤖 **AI Agent Assigned**')
             );
-            
+
             if (aiAgentComment) {
-              console.log(`AI Agent already processed issue #${issue.number}`);
+              console.log(`AI Agent already processed issue #${issue.number} - skipping duplicate`);
               return 'false';
             } else {
-              console.log(`AI Agent not yet processed issue #${issue.number}`);
+              console.log(`AI Agent not yet processed issue #${issue.number} - proceeding`);
               return 'true';
             }
-            
+  ai-agent-handler:
+    needs: check-if-should-process
+    if: needs.check-if-should-process.outputs.should-process == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: write
+      pull-requests: write
+
+    steps:
       - name: Checkout repository
-        if: steps.check-processed.outputs.result == 'true'
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          
+          node-version: "20"
+          cache: "npm"
+
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Parse Issue Content
         id: parse-issue
         uses: actions/github-script@v7
@@ -67,21 +74,21 @@ jobs:
           script: |
             const issue = context.payload.issue;
             const issueBody = issue.body || '';
-            
+
             // Extract information from issue body
             const taskType = issueBody.match(/Task Type[\s\S]*?### (.+)/)?.[1]?.trim() || 'Unknown';
             const priority = issueBody.match(/Priority[\s\S]*?### (.+)/)?.[1]?.trim() || 'Medium';
             const description = issueBody.match(/Task Description[\s\S]*?### ([\s\S]+?)###/)?.[1]?.trim() || issue.title;
-            
+
             console.log('Parsed issue:', { taskType, priority, description });
-            
+
             // Set outputs properly
             core.setOutput('taskType', taskType);
             core.setOutput('priority', priority);
             core.setOutput('description', description);
             core.setOutput('issueNumber', issue.number);
             core.setOutput('title', issue.title);
-            
+
             return {
               taskType,
               priority,
@@ -89,7 +96,7 @@ jobs:
               issueNumber: issue.number,
               title: issue.title
             };
-            
+
       - name: Comment on Issue
         uses: actions/github-script@v7
         with:
@@ -110,7 +117,7 @@ jobs:
               I'll update this issue with my progress. Expected completion time: 5-10 minutes.
               `
             });
-            
+
       - name: Add Progress Label
         uses: actions/github-script@v7
         with:
@@ -121,18 +128,18 @@ jobs:
               repo: context.repo.repo,
               labels: ['in-progress', 'ai-working']
             });
-            
+
       - name: Create AI Implementation Branch
         id: create-branch
         run: |
           git config --global user.name 'AI Agent'
           git config --global user.email 'ai-agent@danielsbonnin.com'
-          
+
           # Create a new branch for this issue
           BRANCH_NAME="ai-task-${{ github.event.issue.number }}-$(date +%s)"
           git checkout -b "$BRANCH_NAME"
           echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          
+
       - name: Generate AI Implementation
         id: ai-implementation
         uses: actions/github-script@v7
@@ -143,18 +150,18 @@ jobs:
             const { GoogleGenerativeAI } = require('@google/generative-ai');
             const fs = require('fs');
             const path = require('path');
-            
+
             if (!process.env.GEMINI_API_KEY) {
               throw new Error('GEMINI_API_KEY not found in secrets');
             }
-            
+
             const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-            
+
             const issue = context.payload.issue;
             const issueBody = issue.body || '';
             const issueTitle = issue.title || '';
-            
+
             // Read current project structure
             const getProjectFiles = () => {
               const files = [];
@@ -179,14 +186,14 @@ jobs:
               walkDir(process.cwd());
               return files;
             };
-            
+
             const projectFiles = getProjectFiles();
             const projectStructure = projectFiles.slice(0, 50).join('\n');
-            
+
             // Create comprehensive prompt for AI
             const prompt = `
             You are an expert software developer working on a Next.js portfolio website. 
-            
+
             **Project Context:**
             - This is a Next.js 15 project with TypeScript, Tailwind CSS
             - It's a personal portfolio website (danielsbonnin.com)
@@ -194,16 +201,16 @@ jobs:
               **Issue to Implement:**
             Title: ${issueTitle}
             Description: ${issueBody}
-            
+
             **Your Task:**
             1. Analyze the request and determine what specific files need to be created/modified
             2. Generate the complete, production-ready code for each file
             3. Ensure the code follows Next.js 15 best practices and TypeScript
             4. Make sure the implementation is complete and functional
-            
+
             **Response Format:**
             You MUST respond with valid JSON only. Use this exact structure:
-            
+
             {
               "analysis": "Brief explanation of what you are implementing",
               "files": [
@@ -216,7 +223,7 @@ jobs:
               ],
               "instructions": "Any additional setup or testing instructions"
             }
-            
+
             **CRITICAL JSON REQUIREMENTS:**
             - Use double quotes for all strings
             - For the "content" field, replace all newlines with \\n
@@ -224,10 +231,10 @@ jobs:
             - Escape all double quotes as \\"
             - Do NOT use backticks (`) anywhere in the JSON
             - The content should be a single string with \\n for line breaks
-            
+
             Example of proper content formatting:
             "content": "import React from 'react';\\n\\nconst Component = () => {\\n  return <div>Hello</div>;\\n};"
-            
+
             Generate actual, working code - not placeholder comments or TODOs.
             `;
               try {
@@ -314,17 +321,17 @@ jobs:
               console.error('AI Implementation Error:', error);
               throw new Error('Failed to generate implementation: ' + error.message);
             }
-            
+
       - name: Commit Implementation
         run: |
           git add .
           git commit -m "🤖 AI Implementation for #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
 
           Generated files using Gemini AI.
-          
+
           Closes #${{ github.event.issue.number }}"
           git push origin "${{ steps.create-branch.outputs.branch-name }}"
-          
+
       - name: Create Pull Request
         uses: actions/github-script@v7
         with:
@@ -360,7 +367,7 @@ jobs:
               Closes #${{ github.event.issue.number }}
               `
             });
-            
+
             // Link PR back to issue
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
@@ -385,7 +392,7 @@ jobs:
               The code is ready for production use! 🎉
               `
             });
-            
+
             // Update labels
             await github.rest.issues.addLabels({
               issue_number: context.issue.number,
@@ -393,7 +400,7 @@ jobs:
               repo: context.repo.repo,
               labels: ['ai-implemented', 'ready-for-review']
             });
-            
+
             await github.rest.issues.removeLabel({
               issue_number: context.issue.number,
               owner: context.repo.owner,
