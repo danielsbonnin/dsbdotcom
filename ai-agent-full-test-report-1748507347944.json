@@ -1,0 +1,206 @@
+{
+  "session": {
+    "id": 1748507347944,
+    "startTime": "2025-05-29T08:29:07.944Z",
+    "steps": [
+      {
+        "timestamp": "2025-05-29T08:29:07.946Z",
+        "level": "INFO",
+        "message": "Step 1: Verifying test issue #37",
+        "data": {}
+      },
+      {
+        "timestamp": "2025-05-29T08:29:08.476Z",
+        "level": "SUCCESS",
+        "message": "Test issue verified",
+        "data": {
+          "labels": [],
+          "number": 37,
+          "state": "OPEN",
+          "title": "Fix mobile navigation menu responsiveness"
+        }
+      },
+      {
+        "timestamp": "2025-05-29T08:29:08.476Z",
+        "level": "INFO",
+        "message": "Step 2: Monitoring workflow triggers",
+        "data": {}
+      },
+      {
+        "timestamp": "2025-05-29T08:29:08.521Z",
+        "level": "WARNING",
+        "message": "Workflow monitoring had issues",
+        "data": {
+          "error": "Command failed: gh run list --limit 5 --json id,workflowName,status,createdAt\nUnknown JSON field: \"id\"\nAvailable fields:\n  attempt\n  conclusion\n  createdAt\n  databaseId\n  displayTitle\n  event\n  headBranch\n  headSha\n  name\n  number\n  startedAt\n  status\n  updatedAt\n  url\n  workflowDatabaseId\n  workflowName\n"
+        }
+      },
+      {
+        "timestamp": "2025-05-29T08:29:08.521Z",
+        "level": "INFO",
+        "message": "Step 3: Tracking AI agent execution",
+        "data": {}
+      },
+      {
+        "timestamp": "2025-05-29T08:29:11.808Z",
+        "level": "SUCCESS",
+        "message": "AI execution tracking completed",
+        "data": {}
+      },
+      {
+        "timestamp": "2025-05-29T08:29:11.808Z",
+        "level": "INFO",
+        "message": "Step 4: Monitoring PR creation",
+        "data": {}
+      },
+      {
+        "timestamp": "2025-05-29T08:30:15.247Z",
+        "level": "SUCCESS",
+        "message": "PR monitoring completed",
+        "data": {
+          "prsFound": 0
+        }
+      },
+      {
+        "timestamp": "2025-05-29T08:30:15.247Z",
+        "level": "INFO",
+        "message": "Step 5: Testing PR approval process",
+        "data": {}
+      },
+      {
+        "timestamp": "2025-05-29T08:30:15.248Z",
+        "level": "INFO",
+        "message": "Step 6: Generating comprehensive test report",
+        "data": {}
+      }
+    ],
+    "results": {
+      "testIssue": {
+        "labels": [],
+        "number": 37,
+        "state": "OPEN",
+        "title": "Fix mobile navigation menu responsiveness"
+      },
+      "debugReport": {
+        "sessionId": 1748507348551,
+        "timestamp": "2025-05-29T08:29:11.800Z",
+        "summary": {
+          "totalActions": 1,
+          "totalDuplicates": 2,
+          "totalPRsTracked": 0,
+          "totalErrors": 0
+        },
+        "issueTracker": [
+          {
+            "number": "37",
+            "title": "Fix mobile navigation menu responsiveness",
+            "body": "The mobile navigation menu has inconsistent spacing and doesn't properly collapse on smaller screens. The hamburger menu icon overlaps with the logo on screens smaller than 640px. Need to improve responsive design and ensure proper touch targets for mobile users.",
+            "labels": [],
+            "state": "OPEN",
+            "timestamp": "2025-05-29T08:29:09.512Z"
+          }
+        ],
+        "actionHistory": [
+          {
+            "type": "WORKFLOW_MONITOR",
+            "data": {
+              "total": 20,
+              "aiAgent": 13
+            },
+            "timestamp": "2025-05-29T08:29:10.325Z"
+          }
+        ],
+        "duplicates": [
+          {
+            "key": "WORKFLOW_EXECUTION-AI Agent Automation",
+            "type": "WORKFLOW_EXECUTION",
+            "workflow": "AI Agent Automation",
+            "count": 13,
+            "timestamp": "2025-05-29T08:29:10.325Z"
+          },
+          {
+            "key": "WORKFLOW_FILES-ai-agent.yml",
+            "type": "WORKFLOW_FILES",
+            "pattern": "ai-agent.yml",
+            "files": [
+              "ai-agent-fixed.yml",
+              "ai-agent.yml"
+            ],
+            "timestamp": "2025-05-29T08:29:10.325Z"
+          }
+        ],
+        "prTracker": [],
+        "debugLog": [
+          {
+            "level": "INFO",
+            "message": "Action: ISSUE_FETCH",
+            "data": {
+              "assignees": [],
+              "body": "The mobile navigation menu has inconsistent spacing and doesn't properly collapse on smaller screens. The hamburger menu icon overlaps with the logo on screens smaller than 640px. Need to improve responsive design and ensure proper touch targets for mobile users.",
+              "labels": [],
+              "state": "OPEN",
+              "title": "Fix mobile navigation menu responsiveness"
+            },
+            "timestamp": "2025-05-29T08:29:09.513Z"
+          },
+          {
+            "level": "WARNING",
+            "message": "Duplicate detected: WORKFLOW_EXECUTION",
+            "data": {
+              "type": "WORKFLOW_EXECUTION",
+              "workflow": "AI Agent Automation",
+              "count": 13,
+              "timestamp": "2025-05-29T08:29:10.325Z"
+            },
+            "timestamp": "2025-05-29T08:29:10.325Z"
+          },
+          {
+            "level": "WARNING",
+            "message": "Duplicate detected: WORKFLOW_FILES",
+            "data": {
+              "type": "WORKFLOW_FILES",
+              "pattern": "ai-agent.yml",
+              "files": [
+                "ai-agent-fixed.yml",
+                "ai-agent.yml"
+              ],
+              "timestamp": "2025-05-29T08:29:10.325Z"
+            },
+            "timestamp": "2025-05-29T08:29:10.325Z"
+          }
+        ],
+        "recommendations": [
+          {
+            "title": "Remove Duplicate Workflows",
+            "description": "Multiple similar workflows detected that may cause conflicts",
+            "action": "Consolidate or remove redundant workflow files",
+            "priority": "HIGH"
+          }
+        ]
+      },
+      "generatedPRs": []
+    },
+    "endTime": "2025-05-29T08:30:15.248Z",
+    "duration": 67
+  },
+  "summary": {
+    "issueCreated": true,
+    "workflowsTriggered": 0,
+    "duplicatesFound": 2,
+    "prsGenerated": 0,
+    "approvalTested": false
+  },
+  "recommendations": [
+    "Clean up duplicate workflows to prevent conflicts",
+    "Verify AI agent configuration - no PRs were generated",
+    "Set up monitoring dashboard for AI agent activities",
+    "Consider implementing rate limiting for AI agent actions"
+  ],
+  "nextSteps": [
+    "Configure webhook triggers for more responsive AI agent activation",
+    "Set up automated cleanup of duplicate workflows",
+    "Implement PR approval confidence scoring improvements",
+    "Add notification system for AI agent activities",
+    "Create rollback mechanism for AI-generated changes",
+    "Set up performance metrics tracking for AI agents"
+  ]
+}

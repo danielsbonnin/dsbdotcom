@@ -1,0 +1,97 @@
+{
+  "sessionId": 1748507348551,
+  "timestamp": "2025-05-29T08:29:11.800Z",
+  "summary": {
+    "totalActions": 1,
+    "totalDuplicates": 2,
+    "totalPRsTracked": 0,
+    "totalErrors": 0
+  },
+  "issueTracker": [
+    {
+      "number": "37",
+      "title": "Fix mobile navigation menu responsiveness",
+      "body": "The mobile navigation menu has inconsistent spacing and doesn't properly collapse on smaller screens. The hamburger menu icon overlaps with the logo on screens smaller than 640px. Need to improve responsive design and ensure proper touch targets for mobile users.",
+      "labels": [],
+      "state": "OPEN",
+      "timestamp": "2025-05-29T08:29:09.512Z"
+    }
+  ],
+  "actionHistory": [
+    {
+      "type": "WORKFLOW_MONITOR",
+      "data": {
+        "total": 20,
+        "aiAgent": 13
+      },
+      "timestamp": "2025-05-29T08:29:10.325Z"
+    }
+  ],
+  "duplicates": [
+    {
+      "key": "WORKFLOW_EXECUTION-AI Agent Automation",
+      "type": "WORKFLOW_EXECUTION",
+      "workflow": "AI Agent Automation",
+      "count": 13,
+      "timestamp": "2025-05-29T08:29:10.325Z"
+    },
+    {
+      "key": "WORKFLOW_FILES-ai-agent.yml",
+      "type": "WORKFLOW_FILES",
+      "pattern": "ai-agent.yml",
+      "files": [
+        "ai-agent-fixed.yml",
+        "ai-agent.yml"
+      ],
+      "timestamp": "2025-05-29T08:29:10.325Z"
+    }
+  ],
+  "prTracker": [],
+  "debugLog": [
+    {
+      "level": "INFO",
+      "message": "Action: ISSUE_FETCH",
+      "data": {
+        "assignees": [],
+        "body": "The mobile navigation menu has inconsistent spacing and doesn't properly collapse on smaller screens. The hamburger menu icon overlaps with the logo on screens smaller than 640px. Need to improve responsive design and ensure proper touch targets for mobile users.",
+        "labels": [],
+        "state": "OPEN",
+        "title": "Fix mobile navigation menu responsiveness"
+      },
+      "timestamp": "2025-05-29T08:29:09.513Z"
+    },
+    {
+      "level": "WARNING",
+      "message": "Duplicate detected: WORKFLOW_EXECUTION",
+      "data": {
+        "type": "WORKFLOW_EXECUTION",
+        "workflow": "AI Agent Automation",
+        "count": 13,
+        "timestamp": "2025-05-29T08:29:10.325Z"
+      },
+      "timestamp": "2025-05-29T08:29:10.325Z"
+    },
+    {
+      "level": "WARNING",
+      "message": "Duplicate detected: WORKFLOW_FILES",
+      "data": {
+        "type": "WORKFLOW_FILES",
+        "pattern": "ai-agent.yml",
+        "files": [
+          "ai-agent-fixed.yml",
+          "ai-agent.yml"
+        ],
+        "timestamp": "2025-05-29T08:29:10.325Z"
+      },
+      "timestamp": "2025-05-29T08:29:10.325Z"
+    }
+  ],
+  "recommendations": [
+    {
+      "title": "Remove Duplicate Workflows",
+      "description": "Multiple similar workflows detected that may cause conflicts",
+      "action": "Consolidate or remove redundant workflow files",
+      "priority": "HIGH"
+    }
+  ]
+}

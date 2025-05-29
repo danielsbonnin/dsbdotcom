@@ -1,0 +1,14 @@
+/* Mock mobile navigation fix */
+.navbar { 
+  padding: 1rem;
+  z-index: 1000;
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0.5rem;
+  }
+  .hamburger {
+    margin-right: 10px;
+  }
+}
