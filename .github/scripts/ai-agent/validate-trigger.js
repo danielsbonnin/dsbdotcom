@@ -1,8 +1,7 @@
 /**
  * Validates if the AI agent should process the current GitHub event
  */
-async function validateTrigger({ github, context, core }) {
-  try {
+async function validateTrigger({ github, context, core }) {  try {
     const { issue } = context.payload;
     
     if (!issue) {
@@ -16,8 +15,12 @@ async function validateTrigger({ github, context, core }) {
     // Check for @ai-agent mention in comments
     const hasAiAgentMention = context.payload.comment?.body?.includes('@ai-agent');
     
-    const shouldProcess = hasAiAgentLabel || hasAiAgentMention;
+    // Check for [AI-TASK] prefix in title
+    const hasAiTaskPrefix = issue.title?.startsWith('[AI-TASK]');
+
+    const shouldProcess = Boolean(hasAiAgentLabel || hasAiAgentMention || hasAiTaskPrefix);
     
+    core.info(`Issue #${issue.number}: Checking triggers - Label: ${hasAiAgentLabel}, Mention: ${hasAiAgentMention}, AI-TASK: ${hasAiTaskPrefix}`);
     core.info(`Issue #${issue.number}: AI Agent trigger ${shouldProcess ? 'detected' : 'not found'}`);
     
     if (shouldProcess) {
@@ -32,9 +35,10 @@ async function validateTrigger({ github, context, core }) {
       core.setOutput('issue-data', JSON.stringify(issueData));
     }
     
-    core.setOutput('should-process', shouldProcess.toString());
+    const shouldProcessString = shouldProcess.toString();
+    core.setOutput('should-process', shouldProcessString);
     
-    return { 'should-process': shouldProcess.toString() };
+    return { 'should-process': shouldProcessString };
     
   } catch (error) {
     core.setFailed(`Trigger validation failed: ${error.message}`);

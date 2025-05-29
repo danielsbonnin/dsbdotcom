@@ -19,6 +19,11 @@ jobs:
       should-process: ${{ steps.validate.outputs.should-process }}
       issue-data: ${{ steps.validate.outputs.issue-data }}
     steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
       - name: Validate Trigger Conditions
         id: validate
         uses: actions/github-script@v7
