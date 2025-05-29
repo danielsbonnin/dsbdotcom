@@ -1,0 +1,206 @@
+name: AI Agent Automation
+
+on:
+  issues:
+    types: [opened, labeled]
+  issue_comment:
+    types: [created]
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  validate-trigger:
+    name: Validate AI Agent Trigger
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    outputs:
+      should-process: ${{ steps.validate.outputs.should-process }}
+      issue-data: ${{ steps.validate.outputs.issue-data }}
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Validate Trigger Conditions
+        id: validate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { validateTrigger } = require('./.github/scripts/ai-agent/validate-trigger.js');
+            return await validateTrigger({ github, context, core });
+
+  check-duplicate:
+    name: Check for Duplicate Processing
+    needs: validate-trigger
+    if: needs.validate-trigger.outputs.should-process == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    outputs:
+      should-continue: ${{ steps.check.outputs.should-continue }}
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Check for Existing AI Processing
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { checkDuplicateProcessing } = require('./.github/scripts/ai-agent/check-duplicate.js');
+            return await checkDuplicateProcessing({ github, context, core });
+
+  parse-issue:
+    name: Parse Issue Content
+    needs: [validate-trigger, check-duplicate]
+    if: needs.check-duplicate.outputs.should-continue == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    outputs:
+      task-data: ${{ steps.parse.outputs.task-data }}
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Extract Task Information
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { parseIssueContent } = require('./.github/scripts/ai-agent/parse-issue.js');
+            return await parseIssueContent({ github, context, core });
+
+  notify-start:
+    name: Notify Processing Start
+    needs: [validate-trigger, check-duplicate, parse-issue]
+    if: needs.check-duplicate.outputs.should-continue == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Post Start Notification
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { notifyProcessingStart } = require('./.github/scripts/ai-agent/notifications.js');
+            const taskData = JSON.parse(process.env.TASK_DATA);
+            await notifyProcessingStart({ github, context, taskData });
+        env:
+          TASK_DATA: ${{ needs.parse-issue.outputs.task-data }}
+
+  ai-implementation:
+    name: Generate AI Implementation
+    needs: [validate-trigger, check-duplicate, parse-issue, notify-start]
+    if: needs.check-duplicate.outputs.should-continue == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    outputs:
+      implementation-result: ${{ steps.generate.outputs.implementation-result }}
+      branch-name: ${{ steps.create-branch.outputs.branch-name }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Create Feature Branch
+        id: create-branch
+        run: |
+          BRANCH_NAME="ai-task-${{ github.event.issue.number }}-$(date +%s)"
+          echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          git checkout -b "$BRANCH_NAME"
+          git config --local user.email "action@github.com"
+          git config --local user.name "AI Agent"
+          
+      - name: Generate Implementation
+        id: generate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { generateImplementation } = require('./.github/scripts/ai-agent/generate-implementation.js');
+            const taskData = JSON.parse(process.env.TASK_DATA);
+            return await generateImplementation({ github, context, core, taskData });
+        env:
+          TASK_DATA: ${{ needs.parse-issue.outputs.task-data }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          
+      - name: Commit Implementation
+        run: |
+          git add .
+          git commit -m "🤖 AI Implementation for #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+
+          Generated files using Gemini AI.
+
+          Closes #${{ github.event.issue.number }}"
+          git push origin "${{ steps.create-branch.outputs.branch-name }}"
+
+  create-pull-request:
+    name: Create Pull Request
+    needs: [parse-issue, ai-implementation]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Create Pull Request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { createImplementationPR } = require('./.github/scripts/ai-agent/create-pr.js');
+            const taskData = JSON.parse(process.env.TASK_DATA);
+            const branchName = process.env.BRANCH_NAME;
+            const implementationResult = process.env.IMPLEMENTATION_RESULT;
+            
+            await createImplementationPR({ 
+              github, 
+              context, 
+              taskData, 
+              branchName, 
+              implementationResult 
+            });
+        env:
+          TASK_DATA: ${{ needs.parse-issue.outputs.task-data }}
+          IMPLEMENTATION_RESULT: ${{ needs.ai-implementation.outputs.implementation-result }}
+          BRANCH_NAME: ${{ needs.ai-implementation.outputs.branch-name }}
+
+  handle-failure:
+    name: Handle Failure
+    needs: [validate-trigger, check-duplicate, parse-issue, notify-start, ai-implementation, create-pull-request]
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout Scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          
+      - name: Notify Failure
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { notifyProcessingFailure } = require('./.github/scripts/ai-agent/notifications.js');
+            await notifyProcessingFailure({ github, context });
