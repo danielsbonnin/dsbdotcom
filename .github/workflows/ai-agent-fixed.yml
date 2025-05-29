@@ -6,10 +6,6 @@ on:
   issue_comment:
     types: [created]
 
-concurrency:
-  group: ai-agent-issue-${{ github.event.issue.number }}
-  cancel-in-progress: true
-
 env:
   NODE_VERSION: "20"
 

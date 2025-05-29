@@ -10,6 +10,18 @@ async function validateTrigger({ github, context, core }) {
       return { 'should-process': 'false' };
     }
 
+    // Check if this is a labeled event on a newly created issue (within 30 seconds)
+    if (context.payload.action === 'labeled') {
+      const issueCreated = new Date(issue.created_at);
+      const now = new Date();
+      const timeDiffSeconds = (now - issueCreated) / 1000;
+      
+      if (timeDiffSeconds < 30) {
+        core.info(`Issue #${issue.number}: Skipping labeled event on newly created issue (created ${timeDiffSeconds}s ago)`);
+        return { 'should-process': 'false' };
+      }
+    }
+
     // Check for ai-agent label
     const hasAiAgentLabel = issue.labels?.some(label => label.name === 'ai-agent');
     
