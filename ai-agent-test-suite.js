@@ -66,10 +66,9 @@ class AIAgentTestSuite {
 
     async step2_MonitorWorkflowTriggers() {
         this.logStep('INFO', 'Step 2: Monitoring workflow triggers');
-        
-        try {
+          try {
             // Get baseline workflow runs
-            const { stdout } = await execAsync('gh run list --limit 5 --json id,workflowName,status,createdAt');
+            const { stdout } = await execAsync('gh run list --limit 5 --json number,workflowName,status,createdAt');
             const baselineRuns = JSON.parse(stdout);
             
             console.log(`📊 Baseline: ${baselineRuns.length} recent workflow runs`);
@@ -86,12 +85,11 @@ class AIAgentTestSuite {
             // Wait a bit and check for new runs
             console.log('⏳ Waiting 30 seconds for workflow to trigger...');
             await this.sleep(30000);
-            
-            const { stdout: newRuns } = await execAsync('gh run list --limit 10 --json id,workflowName,status,createdAt');
+              const { stdout: newRuns } = await execAsync('gh run list --limit 10 --json number,workflowName,status,createdAt');
             const currentRuns = JSON.parse(newRuns);
             
             const triggeredRuns = currentRuns.filter(run => 
-                !baselineRuns.find(baseline => baseline.id === run.id)
+                !baselineRuns.find(baseline => baseline.number === run.number)
             );
             
             if (triggeredRuns.length > 0) {

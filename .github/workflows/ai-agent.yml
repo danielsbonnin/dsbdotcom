@@ -165,13 +165,13 @@ jobs:
 
           Closes #${{ github.event.issue.number }}"
           git push origin "${{ steps.create-branch.outputs.branch-name }}"
-
   create-pull-request:
     name: Create Pull Request
     needs: [parse-issue, ai-implementation]
     if: success()
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pull-requests: write
       issues: write
     steps:

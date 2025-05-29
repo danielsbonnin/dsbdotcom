@@ -75,10 +75,9 @@ class AIAgentDebugger extends EventEmitter {
 
     async monitorWorkflowExecution() {
         console.log('\n🔄 Monitoring workflow execution...');
-        
-        try {
+          try {
             // Get current workflow runs
-            const { stdout } = await execAsync('gh run list --limit 20 --json status,conclusion,workflowName,createdAt,url');
+            const { stdout } = await execAsync('gh run list --limit 20 --json status,conclusion,workflowName,createdAt,url,number');
             const runs = JSON.parse(stdout);
             
             console.log(`   📊 Found ${runs.length} recent workflow runs`);
