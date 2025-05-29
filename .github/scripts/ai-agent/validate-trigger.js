@@ -1,7 +1,8 @@
 /**
  * Validates if the AI agent should process the current GitHub event
  */
-async function validateTrigger({ github, context, core }) {  try {
+async function validateTrigger({ github, context, core }) {
+  try {
     const { issue } = context.payload;
     
     if (!issue) {
