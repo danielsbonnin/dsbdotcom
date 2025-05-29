@@ -96,7 +96,8 @@ jobs:
         with:
           script: |
             const { notifyProcessingStart } = require('./.github/scripts/ai-agent/notifications.js');
-            const taskData = JSON.parse('${{ needs.parse-issue.outputs.task-data }}');
+            const taskDataStr = `${{ needs.parse-issue.outputs.task-data }}`;
+            const taskData = JSON.parse(taskDataStr);
             await notifyProcessingStart({ github, context, taskData });
 
   ai-implementation:
@@ -147,7 +148,8 @@ jobs:
         with:
           script: |
             const { generateImplementation } = require('./.github/scripts/ai-agent/generate-implementation.js');
-            const taskData = JSON.parse('${{ needs.parse-issue.outputs.task-data }}');
+            const taskDataStr = `${{ needs.parse-issue.outputs.task-data }}`;
+            const taskData = JSON.parse(taskDataStr);
             return await generateImplementation({ github, context, core, taskData });
             
       - name: Commit and Push Changes
@@ -185,9 +187,11 @@ jobs:
         with:
           script: |
             const { createImplementationPR } = require('./.github/scripts/ai-agent/create-pr.js');
-            const taskData = JSON.parse('${{ needs.parse-issue.outputs.task-data }}');
+            const taskDataStr = `${{ needs.parse-issue.outputs.task-data }}`;
+            const taskData = JSON.parse(taskDataStr);
             const branchName = '${{ needs.ai-implementation.outputs.branch-name }}';
-            const implementationResult = JSON.parse('${{ needs.ai-implementation.outputs.implementation-result }}');
+            const implementationResultStr = `${{ needs.ai-implementation.outputs.implementation-result }}`;
+            const implementationResult = JSON.parse(implementationResultStr);
             
             await createImplementationPR({ 
               github, 
