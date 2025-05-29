@@ -149,7 +149,7 @@ jobs:
           TASK_DATA: ${{ needs.parse-issue.outputs.task-data }}
         with:
           script: |
-            const { generateImplementation } = require('./.github/scripts/ai-agent/generate-implementation-mock.js');
+            const { generateImplementation } = require('./.github/scripts/ai-agent/generate-implementation.js');
             const taskData = JSON.parse(process.env.TASK_DATA);
             return await generateImplementation({ github, context, core, taskData });
             
