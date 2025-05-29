@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 // Replace with actual logic to fetch AI agent status.  This is a placeholder.
 const getAiAgentStatus = async (): Promise<{ lastRun: string | null; status: string | null; }> => {
@@ -9,7 +9,7 @@ const getAiAgentStatus = async (): Promise<{ lastRun: string | null; status: str
   };
 };
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const status = await getAiAgentStatus();
     return NextResponse.json(status);
